@@ -80,9 +80,11 @@ app.all("*", (req, res) => {
 //   });
 
 //listening to the PORT only when the DB connection is successful
+
 mongoose.connection.once("open", () => {
   console.log("MongoDB Connected ✅");
   app.listen(PORT, () => {
     console.log("Listening to port ", PORT);
   });
 });
+//testing changes in firstBranch
