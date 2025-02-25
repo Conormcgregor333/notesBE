@@ -7,6 +7,24 @@ yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
 
+.env
+# Local environment variables
+.env.local
+
+# Log files
+*.log
+
+# Dependency directories
+node_modules/
+
+# Build directories
+dist/
+build/
+
+# Temporary files
+tmp/
+temp/
+
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
