@@ -1,0 +1,14 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+h1 {
+  background: linear-gradient(to right, #ff5f6d, #ffc371);
+  -webkit-background-clip: text;
+  background-clip: "text";
+  color: transparent;
+}
