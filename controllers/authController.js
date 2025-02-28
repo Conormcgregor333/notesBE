@@ -25,8 +25,11 @@ const authenticateUser = async (req, res) => {
     res.status(400).send("User not found");
   } else {
     try {
-      // const decryptedPassword = decryptPassword(pwd);
-      const result = await bcrypt.compare(pwd, foundUser.password);
+      const decryptedPassword = decryptPassword(pwd);
+      const result = await bcrypt.compare(
+        decryptedPassword,
+        foundUser.password
+      );
       console.log(result);
       if (result) {
         console.log(process.env.ACCESS_TOKEN_SECRET);
@@ -39,7 +42,7 @@ const authenticateUser = async (req, res) => {
         const refresh_token = jwt.sign(
           { email: foundUser.email },
           process.env.REFRESH_TOKEN_SECRET,
-          { expiresIn: "1d" }
+          { expiresIn: "300s" }
         );
         foundUser.refresh_token = refresh_token;
         await foundUser.save();

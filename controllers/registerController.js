@@ -22,9 +22,9 @@ const registerUser = async (req, res) => {
     return res.status(400).send("User already exists");
   } else {
     try {
-      // const decryptedPassword = decryptPassword(pwd);
+      const decryptedPassword = decryptPassword(pwd);
       // console.log(pwd, "decrypted password!");
-      const hashedPwd = await bcrypt.hash(pwd, 10);
+      const hashedPwd = await bcrypt.hash(decryptedPassword, 10);
       await UserDB.create({ user: user, password: hashedPwd, email: email });
       return res.status(201).send(`User ${user} registered successfully`);
     } catch (err) {
