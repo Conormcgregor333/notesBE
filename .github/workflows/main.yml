@@ -39,7 +39,7 @@ jobs:
           SLACK_COLOR: "#36a64f"
 
       - name: Deploy to Railway
-        run: railway up
+        run: railway up --service notesBE
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
