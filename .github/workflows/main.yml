@@ -34,7 +34,7 @@ jobs:
       - name: Send Slack Notification (Build Started)
         uses: rtCamp/action-slack-notify@v2
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_MESSAGE: "🚀 Deployment to Railway started for commit ${{ github.sha }} on branch ${{ github.ref }}."
           SLACK_COLOR: "#36a64f"
 
@@ -47,7 +47,7 @@ jobs:
         if: success()
         uses: rtCamp/action-slack-notify@v2
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_MESSAGE: "✅ Deployment to Railway *succeeded* for commit ${{ github.sha }} on branch ${{ github.ref }}."
           SLACK_COLOR: "#2eb886"
 
