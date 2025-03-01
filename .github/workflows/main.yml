@@ -21,6 +21,15 @@ jobs:
           curl -fsSL https://railway.app/install.sh | sh
           echo "$HOME/.railway/bin" >> $GITHUB_PATH
 
+      - name: Debug Secrets
+        run: |
+          if [ -z "${{ secrets.SLACK_WEBHOOK_URL }}" ]; then
+            echo "❌ SLACK_WEBHOOK_URL is missing!"
+            exit 1
+          else
+            echo "✅ SLACK_WEBHOOK_URL is set!"
+          fi
+
       - name: Send Slack Notification (Build Started)
         uses: rtCamp/action-slack-notify@v2
         env:
