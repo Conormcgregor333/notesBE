@@ -1,0 +1,60 @@
+name: Deploy to Railway
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Railway CLI
+        run: |
+          curl -fsSL https://railway.app/install.sh | sh
+          echo "$HOME/.railway/bin" >> $GITHUB_PATH
+
+      - name: Debug Secrets
+        run: |
+          if [ -z "${{ secrets.SLACK_WEBHOOK_URL }}" ]; then
+            echo "❌ SLACK_WEBHOOK_URL is missing!"
+            exit 1
+          else
+            echo "✅ SLACK_WEBHOOK_URL is set!"
+          fi
+
+      - name: Send Slack Notification (Build Started)
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_MESSAGE: "🚀 Deployment to Railway started for commit ${{ github.sha }} on branch ${{ github.ref }}."
+          SLACK_COLOR: "#36a64f"
+
+      - name: Deploy to Railway
+        run: railway up --service notesBE
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+
+      - name: Send Slack Notification (Build Success)
+        if: success()
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_MESSAGE: "✅ Deployment to Railway *succeeded* for commit ${{ github.sha }} on branch ${{ github.ref }}."
+          SLACK_COLOR: "#2eb886"
+
+      - name: Send Slack Notification (Build Failed)
+        if: failure()
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_MESSAGE: "❌ Deployment to Railway *failed* for commit ${{ github.sha }} on branch ${{ github.ref }}."
+          SLACK_COLOR: "#ff0000"
